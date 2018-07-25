@@ -65,12 +65,9 @@
     <Compile Include="Class1.vb" />
     <Compile Include="clsBusinessObjectCollection.vb" />
     <Compile Include="clsBusinessObjectUtilities.vb" />
-    <Compile Include="clsLocalCache.vb" />
     <Compile Include="IBO.vb" />
     <Compile Include="IBOs.vb" />
-    <Compile Include="ICache.vb" />
     <Compile Include="IChildComponent.vb" />
-    <Compile Include="ICoherentCache.vb" />
     <Compile Include="INotifyCollectionChange.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

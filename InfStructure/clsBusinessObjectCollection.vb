@@ -544,7 +544,7 @@ Public Class clsBusinessObjectCollection(Of T As {IBO})
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function ICollection_Contains(item As T) As Boolean Implements Generic.ICollection(Of T).Contains
-        contains(item)
+        Return contains(item)
     End Function
 
     ''' <summary>
