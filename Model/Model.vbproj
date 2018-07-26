@@ -63,7 +63,6 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.vb" />
     <Compile Include="clsQuestion.vb" />
     <Compile Include="clsReview.vb" />
     <Compile Include="clsSetting.vb" />
@@ -102,6 +101,12 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InfStructure\InfStructure.vbproj">
+      <Project>{ce6905c3-4860-4bc3-971b-8eb37bfb5560}</Project>
+      <Name>InfStructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

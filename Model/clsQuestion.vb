@@ -1,16 +1,16 @@
 Option Strict On
 Option Explicit On
+Imports InfStructure
+
 Imports InfServer
 Imports KiwiUtil
 '*** Start Custom Code imports
 '*** End Custom Code
 
-<clsBusinessClass("Alt", "Question")> _
 Public Class clsQuestion
     Implements IBO
-    Implements IESPBO
-'*** Start Custom Code class_definition
-'*** End Custom Code
+    '*** Start Custom Code class_definition
+    '*** End Custom Code
 
     'Class: AltServer.clsQuestion 
     ' Generated Class
@@ -43,17 +43,11 @@ Public Class clsQuestion
     Private mIsStored As Boolean
     Private mInitialised As Boolean
     Private mParent As IBO
-    Private mActions As clsBusinessObjectCollection(Of clsActivity)
+
     Private mValues As clsESPObjectData
     Private mCache As ICache
     Private mChangeStack As Integer
     Private mTag As Object
-    Private mIBOKey As clsKey
-    ''' <summary>
-    ''' Allows the business object to define service parameters for an external service
-    ''' </summary>
-    ''' <remarks></remarks>
-    Private mServiceParameters As IServiceParameters
     Private mClonedQuestion As clsQuestion
 
 #If CACHETRACE Then
@@ -61,57 +55,14 @@ Public Class clsQuestion
 #End If
 
 #Region "Custom Declarations"
-'*** Start Custom Code custom_declarations
-'*** End Custom Code
+    '*** Start Custom Code custom_declarations
+    '*** End Custom Code
 #End Region
 
 #Region "Shared"
-    ''' <summary>
-    ''' Make a key from raw data
-    ''' </summary>
-    ''' <param name="appEnvironment">The application environment</param>
-    ''' <param name="data">The raw data</param>
-    ''' <returns>The key created from the data</returns>
-    Public Shared Function makeKey(ByVal appEnvironment As clsAppEnvironment, ByVal data As IObjectData) As clsKey
-        Dim keyComponents As Generic.List(Of clsKeyComponent)
-        Dim objectData As clsESPObjectData
 
-        If data Is Nothing Then
-            Throw New ArgumentNullException("Cannot call clsQuestion.makeKey when data is null.")
-        End If
-
-        If Not TypeOf (data) Is clsESPObjectData Then
-            Throw New ArgumentException("clsQuestion.makeKey failed as it is only possible to create a key if data is of the type clsESPObjectData.")
-        End If
-
-        objectData = DirectCast(data, clsESPObjectData)
-        keyComponents = New Generic.List(Of clsKeyComponent)
-        keyComponents.Add(New clsKeyComponent(appEnvironment, objectData(ColumnList.ID.Ordinal)))
-        Return New clsKey(appEnvironment, keyComponents)
-    End Function
 #End Region
 
-    ''' <summary>
-    ''' The unique key used to resolve the business object
-    ''' </summary>
-    Public Overridable ReadOnly Property IBO_key() As clsKey Implements IBO.key
-        Get
-            If mIBOKey Is Nothing OrElse Not mIBOKey.doesKeyMatchIBO(Me) Then
-                mIBOKey = clsKey.createKey(mAppEnvironment, Me)
-            End If
-
-            Return mIBOKey
-        End Get
-    End Property
-	
-	''' <summary>
-    ''' Allows the business object to define service parameters for an external service
-    ''' </summary>
-    Public Overridable ReadOnly Property IBO_serviceParameters() As IServiceParameters Implements IBO.serviceParameters
-        Get
-            Return mServiceParameters
-        End Get
-    End Property
 
     ''' <summary>
     ''' Database id for the business object.
@@ -157,21 +108,21 @@ Public Class clsQuestion
     ''' <summary>
     ''' Load the business object from persistent storage.
     ''' </summary>
-    Public Overridable Function IBO_loadFromStorage(ByVal refresh As Boolean) As Boolean Implements IBO.loadFromStorage
+    Public Overridable Function IBO_loadFromStorage() As Boolean Implements IBO.loadFromStorage
         Dim settonothing As Boolean
-'*** Start Custom Code pre-loadfromstorage
-'*** End Custom Code
+        '*** Start Custom Code pre-loadfromstorage
+        '*** End Custom Code
         If Not mValues Is Nothing Then
             'if this load fails, it sets the values variable to nothing
-            IBO_loadFromStorage = mCache.loadFromStorage(Me, refresh)
+            IBO_loadFromStorage = mCache.loadFromStorage(Me)
         End If
         If Not IBO_loadFromStorage Then
             settonothing = True
         End If
         If settonothing Then
         End If
-'*** Start Custom Code post-loadfromstorage
-'*** End Custom Code
+        '*** Start Custom Code post-loadfromstorage
+        '*** End Custom Code
     End Function
 
     ''' <summary>
@@ -192,7 +143,7 @@ Public Class clsQuestion
     ''' <summary>
     ''' Business object has changed.
     ''' </summary>
-    Public Overridable Property IBO_dirty() As Boolean Implements IBO.dirty
+    Public Overridable Property IBO_dirty() As Boolean Implements IBO.isDirty
         Get
             Return mdirty
         End Get
@@ -245,35 +196,17 @@ Public Class clsQuestion
     End Property
 
     ''' <summary>
-    ''' Last user to change the business object.
-    ''' </summary>
-    Public Overridable ReadOnly Property IBO_user() As String Implements IBO.user
-        Get
-            Return Convert.ToString(mValues(ColumnList.UserID.Ordinal))
-        End Get
-    End Property
-
-    ''' <summary>
     ''' Business object description.
     ''' </summary>
-    Public Overridable ReadOnly Property IBO_description(Optional ByVal viewPoint As String = "") As String Implements IBO.description
+    Public Overridable ReadOnly Property IBO_description() As String Implements IBO.description
         Get
             Dim separator As String
             separator = " "
             IBO_description = ""
-'*** Start Custom Code ibo_description_preassignment
-'*** End Custom Code
+            '*** Start Custom Code ibo_description_preassignment
+            '*** End Custom Code
         End Get
     End Property
-
-    ''' <summary>
-    ''' Business object is wanted.
-    ''' </summary>
-    Public Overridable Function IBO_isWanted() As Boolean Implements IBO.isWanted
-        IBO_isWanted = True
-'*** Start Custom Code ibo_iswanted_end
-'*** End Custom Code
-    End Function
 
     ''' <summary>
     ''' Set a field to null.
@@ -514,14 +447,6 @@ Public Class clsQuestion
         End Set
     End Property
 
-    ''' <summary>
-    ''' This is a collection of activities which are actions.
-    ''' </summary>
-    Public Overridable ReadOnly Property IBO_actionList() As clsBusinessObjectCollection(Of clsActivity) Implements IBO.actionList
-        Get
-            Return IBO_businessClass.Actions
-        End Get
-    End Property
 
     ''' <summary>
     ''' Cache that this business object belongs to
@@ -532,67 +457,6 @@ Public Class clsQuestion
         End Get
     End Property
 
-    ''' <summary>
-    ''' Execute a business object activity.
-    ''' </summary>
-    ''' <param name="activity">activity to execute</param>
-    ''' <param name="parameters">*Optional* parameters for the activity</param>
-    Public Overridable Function IBO_execute(ByVal activity As String, Optional ByVal parameters As clsList = Nothing) As Object Implements IBO.execute
-'*** Start Custom Code ibo_execute_start
-'*** End Custom Code
-
-        Dim errMsg As String
-        IBO_execute = Nothing
-        Select Case clsStringUtilities.noSpaces(activity).ToLower
-'*** Start Custom Code ibo_execute_customactions
-'*** End Custom Code
-            Case Else
-                errMsg = mAppEnvironment.LangController.translate("Action @activity is unknown for class @className: ", _
-                "Messages.Error Messages.Global.Unknown Activity.Text", clsInfoMessage.MessageSeverity.ErrorMessage _
-                , New clsInfoParam("activity", activity), New clsInfoParam("className", Me.IBO_businessClass.displayname))
-                Throw New InvalidOperationException(errMsg)
-        End Select
-    End Function
-
-    ''' <summary>
-    ''' *Private* Check if a business object activity can be executed.
-    ''' </summary>
-    ''' <param name="activity">activity to execute</param>
-    Private Function checkCanExecute(ByVal activity As String) As Boolean
-        If Not IBO_canExecute(activity) Then
-            Dim errMsg As String = mAppEnvironment.LangController.translate("Cannot '@activity' for @className with status @Status", _
-                "Messages.Error Message.Global.Invalid Activity.Text", clsInfoMessage.MessageSeverity.ErrorMessage _
-                , New clsInfoParam("activity", activity), New clsInfoParam("className", Me.IBO_businessClass.displayname) _
-                , New clsInfoParam("status", Me.IBO_statusText))
-            Throw New InvalidOperationException(errMsg)
-        End If
-        checkCanExecute = mMetaData.validateRulesforActivity(Me, activity)
-    End Function
-
-    ''' <summary>
-    ''' Determines if the business object activity can be executed.
-    ''' </summary>
-    ''' <param name="activity">activity to execute</param>
-    ''' <returns>True if the business object activity can be executed</returns>
-    Public Overridable Function IBO_canExecute(ByVal activity As String) As Boolean Implements IBO.canExecute
-        Dim canExec As Boolean
-        Dim hasPermission As Boolean
-        Dim canExecuteForPlant As IPlant = Nothing
-
-'*** Start Custom Code ibo_canexecute_setplant
-'*** End Custom Code
-        hasPermission = mAppEnvironment.CurrentUser.canAccess(activity, canExecuteForPlant)
-        If hasPermission Then
-            canExec = True
-            Select Case clsStringUtilities.noSpaces(activity).ToLower
-'*** Start Custom Code ibo_canexecute_customactions
-'*** End Custom Code
-            End Select
-        End If
-'*** Start Custom Code ibo_canexecute_customactionsend
-'*** End Custom Code
-        IBO_canExecute = canExec And hasPermission
-    End Function
 
     ''' <summary>
     ''' This must be called to initialise a new business object.
@@ -652,24 +516,6 @@ Public Class clsQuestion
             End Try
         End Get
     End Property
-
-
-    'Property: userID 
-    'The last user to modify this question.
-    Public Overridable ReadOnly Property userID() As String
-        Get
-            Try
-'*** Start Custom Code get_userid_start
-'*** End Custom Code
-                Return clsBusinessObjectUtilities.getSafeString(mValues(ColumnList.UserID.Ordinal))
-            Catch ex As Exception
-'*** Start Custom Code get_userid_err
-'*** End Custom Code
-                Throw
-            End Try
-        End Get
-    End Property
-
 
     'Property: name 
     Public Overridable Property name() As String
@@ -1060,18 +906,6 @@ Public Class clsQuestion
 '*** End Custom Code
     End Function
 
-    ''' <summary>
-    ''' Is the business object valid?
-    ''' </summary>
-    ''' <param name="messages">warning or information messages</param>
-    ''' <returns>true if the business object is valid, false if it is invalid.</returns>
-    ''' <remarks></remarks>
-    Public Function IBO_isValid(ByVal messages As clsInfoMessages) As Boolean Implements IBO.isValid
-'*** Start Custom Code isvalid_custom_validation
-'*** End Custom Code
-        Return True
-    End Function
-
     Public Overridable Function getClonedQuestion() As clsQuestion
         getClonedQuestion = mClonedQuestion
     End Function
@@ -1079,25 +913,24 @@ Public Class clsQuestion
     ''' <summary>
     ''' Injects the application environment to the module level appenvironment variable
     ''' </summary>
-    Private Sub Setup(ByVal aCache As ICache)
+    Private Sub Setup(ByVal aDBPlayer As IDBPlayer)
         mValues = New clsESPObjectData(FIELD_COUNT)
-        mCache = aCache
-        mAppEnvironment = aCache.appEnvironment
+        mCache = aDBPlayer
+        mAppEnvironment = aDBPlayer.appEnvironment
         mMetaData = mAppEnvironment.MetaData
         DirectCast(mCache, ICoherentCache).addNewBusinessObject(Me)
         mChangeStack = 0
-        mServiceParameters = Nothing
         'Initialise any enumerations
-'*** Start Custom Code class_initialize_end
-'*** End Custom Code
+        '*** Start Custom Code class_initialize_end
+        '*** End Custom Code
         mInitialised = False
     End Sub
 
     ''' <summary>
     ''' Initialize this object with a ICache
     ''' </summary>
-    Public Sub New(ByVal aCache As ICache)
-        If aCache Is Nothing Then
+    Public Sub New(ByVal dbPlayer As IDBPlayer)
+        If dbPlayer Is Nothing Then
             Throw New ArgumentNullException()
         End If
 #If CACHETRACE Then
@@ -1107,9 +940,9 @@ Public Class clsQuestion
             traceCache.TraceObjectCreation(Me, mCreationTrace)
         End If
 #End If
-        Setup(aCache)
+        Setup(dbPlayer)
     End Sub
-'*** Start Custom Code custom_operations
-'*** End Custom Code
+    '*** Start Custom Code custom_operations
+    '*** End Custom Code
 
 End Class
