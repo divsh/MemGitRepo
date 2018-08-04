@@ -35,17 +35,15 @@ Public Class clsQuestion
 
     Private Const FIELD_COUNT As Integer = 10
 
-    Private mAppEnvironment As clsAppEnvironment
-    Private mMetaData As clsDDController
-    Private mClass As clsBusinessClass
+    Private mClass As String
     Private mdirty As Boolean
     Private mReadOnly As Boolean
     Private mIsStored As Boolean
     Private mInitialised As Boolean
     Private mParent As IBO
 
-    Private mValues As clsESPObjectData
-    Private mCache As ICache
+    Private mValues As clsBusinessObjectData
+    Private mCache As IDBContext
     Private mChangeStack As Integer
     Private mTag As Object
     Private mClonedQuestion As clsQuestion
@@ -63,6 +61,11 @@ Public Class clsQuestion
 
 #End Region
 
+    Public Shared ReadOnly Property fields As List(Of IField)
+        Get
+
+        End Get
+    End Property
 
     ''' <summary>
     ''' Database id for the business object.
@@ -75,6 +78,8 @@ Public Class clsQuestion
 
     Public Overridable Sub IBO_setID(ByVal thisID As Integer) Implements IBO.setID
         mValues(ColumnList.ID.Ordinal) = thisID
+
+
     End Sub
 
     ''' <summary>
@@ -828,8 +833,9 @@ Public Class clsQuestion
 '*** Start Custom Code get_reviews_start
 '*** End Custom Code
                 reviews = mCache.GetRelatedBusinessCollection(Of clsQuestion, clsReview)(Me, "question", refresh)
-'*** Start Custom Code get_reviews_end
-'*** End Custom Code
+            '*** Start Custom Code get_reviews_end
+
+            '*** End Custom Code
         End Get
     End Property
 

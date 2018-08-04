@@ -49,6 +49,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="WhereClauseBuilder">
+      <HintPath>.\WhereClauseBuilder.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
@@ -63,12 +66,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="clsBusinessObjectCollection.vb" />
+    <Compile Include="clsBusinessObjectData.vb" />
     <Compile Include="clsBusinessObjectUtilities.vb" />
+    <Compile Include="clsDBContext.vb" />
+    <Compile Include="clsObjectData.vb" />
     <Compile Include="IBO.vb" />
     <Compile Include="IBOs.vb" />
     <Compile Include="IChildComponent.vb" />
     <Compile Include="IDBPlayer.vb" />
+    <Compile Include="IField.vb" />
     <Compile Include="INotifyCollectionChange.vb" />
+    <Compile Include="IObjectData.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
